@@ -1,0 +1,12 @@
+(Change the file names and add the file you want)
+
+@echo off
+
+cd "\directory\CalculatorbotforA.L.I.C.E\"
+start CalculatorbotforA.L.I.C.E.bat//Chatbot.bat//openfile/Chatbot.bat
+cd "\directory\Microsoft A.i Intelligence\"
+start Microsoft A.i Intelligence.bat//Chatbot.bat//openfile/Chatbot.bat
+cd "\directory\linkopener\"
+start linkopener.bat//Chatbot.bat//openfile/Chatbot.bat
+cd"\directory\batmasterfile\"
+start Chatbot.bat//Chatbot.bat//openfile/Chatbot.bat
