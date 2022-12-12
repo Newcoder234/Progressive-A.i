@@ -293,19 +293,6 @@ pause
 
 mode con: cols=90 lines=50
 cls
-title Programmable Chat Bot (Prototype Version pv1.1)
-ver
-echo  (C)  Programmable Chat Bot (Prototype Version pv1.1)
-echo.
-echo  This Chat Bot is a Prototype and programmable/teachable.
-echo  Prototype Version: pv1.1
-echo  Reprogramed by: Sean Lloyd Harold Raquel
-echo.
-echo  Problems? Questions? Suggestions? Applications? Better contact me at:
-echo  haroldraquel@gmail.com / seanlloydharold@gmail.com
-echo.
-echo  NOTE: This AI chatbot is not originaly from Sean Raquel. This is from 
-echo        www.instructables.com
 echo ===============================================================================
 echo.
 echo.
