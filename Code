@@ -390,6 +390,315 @@ set /p name=
 echo I will not forget your name is %name% again I promise.
 exit /B 0
 
+ # Azure resources
+  subscription_id = "{{cookiecutter.subscription_id}}"
+  resource_group = "{{cookiecutter.resource_group}}"  
+  workspace_name = "{{cookiecutter.workspace_name}}"  
+  workspace_region = "{{cookiecutter.workspace_region}}"
+
+parameters:
+  Agent: Hosted Ubuntu 1604
+  Demands: "python3"
+  stageName: 'defaultStageName'
+  jobDisplayName: 'defaultDisplayName'
+  jobTimeoutInMinutes: 180
+  TridentWorkloadTypeShort: #
+  DeployLocation: #
+  TestPostfix: # "" | "-release" | "-preview"
+  Deploy_Location_Short: #
+  DefaultWorkingDirectory: #
+  Template: #
+  aksimagename: 'myimage'
+  ProjectLocation: #
+  PythonPath: #
+  cluster_name: #
+  flighting_release: false
+  flighting_preview: false
+  doCleanup: True
+  sub_vars: ../vars/agce_devops_sub_vars.yml
+  workload_vars: #
+  sp_appid: #
+  sp_password: #
+
+stages:
+- stage: ${{parameters.stageName}}
+  dependsOn: []    
+  jobs:
+  - job: deploy_notebook_steps
+    displayName: ${{parameters.jobDisplayName}}
+
+    pool:
+      name: ${{parameters.Agent}}
+      demands: ${{parameters.Demands}}
+    container: "rocker/tidyverse:latest"
+
+    timeoutInMinutes: ${{parameters.jobTimeoutInMinutes}}
+  
+    workspace:
+      clean: all
+  
+    variables:
+    - template: ${{parameters.sub_vars}}
+    - template: ${{parameters.workload_vars}}
+  
+    steps:
+    - template: ../steps/deploy_container_steps_v2.yml
+      parameters:
+        template: ${{variables.Template}}
+        azureSubscription: ${{variables.azureSubscription}}
+        azure_subscription: ${{variables.azure_subscription}}
+        azureresourcegroup: ${{variables.TridentWorkloadTypeShort}}-${{variables.DeployLocation}}${{parameters.TestPostfix}}
+        workspacename: ${{variables.TridentWorkloadTypeShort}}-${{variables.DeployLocation}}
+        azureregion: ${{variables.DeployLocation}}
+        aksimagename: ${{parameters.aksimagename}}
+        aks_name: ${{variables.TridentWorkloadTypeShort}}${{parameters.TestPostfix}}
+        location: ${{variables.ProjectLocation}}
+        python_path: ${{parameters.DefaultWorkingDirectory}}${{variables.PythonPath}}
+        cluster_name: ${{variables.TridentWorkloadTypeShort}}${{parameters.TestPostfix}}
+        flighting_release: ${{parameters.flighting_release}}
+        flighting_preview: ${{parameters.flighting_preview}}
+        sp_appid: ${{parameters.sp_appid}}
+        sp_password: ${{parameters.sp_password}}
+        doCleanup: ${{parameters.doCleanup}}
+parameters:
+  Agent: Hosted Ubuntu 1604
+  stageName: 'defaultStageName'
+  jobDisplayName: 'defaultDisplayName'
+  jobTimeoutInMinutes: 180
+  TridentWorkloadTypeShort: #
+  DeployLocation: #
+  TestPostfix: # "" | "-release" | "-preview"
+  Deploy_Location_Short: #
+  DefaultWorkingDirectory: #
+  Template: #
+  azureSubscription: #
+  azure_subscription: #
+  aksimagename: #
+  ProjectLocation: #
+  PythonPath: #
+  cluster_name: #
+  flighting_release: false
+  flighting_preview: false
+  doCleanup: False
+
+stages:
+- stage: ${{parameters.stageName}}
+  dependsOn: []    
+  jobs:
+  - job: deploy_notebook_steps
+    displayName: ${{parameters.jobDisplayName}}
+
+    pool:
+      name: ${{parameters.Agent}}
+  
+    timeoutInMinutes: ${{parameters.jobTimeoutInMinutes}}
+  
+    workspace:
+      clean: all
+  
+    variables:
+      AIResourceGroupName: ${{parameters.TridentWorkloadTypeShort}}-${{parameters.DeployLocation}}${{parameters.TestPostfix}}
+      aks_name: ${{parameters.TridentWorkloadTypeShort}}${{parameters.TestPostfix}}
+      cluster_name: ${{parameters.TridentWorkloadTypeShort}}${{parameters.TestPostfix}}
+      python_path: ${{parameters.DefaultWorkingDirectory}}${{parameters.PythonPath}}
+  
+    steps:
+    - template: ../steps/deploy_notebook_steps.yml
+      parameters:
+        template: ${{parameters.Template}}
+        azureSubscription: ${{parameters.azureSubscription}}
+        azure_subscription: ${{parameters.azure_subscription}}
+        azureresourcegroup: ${{variables.AIResourceGroupName}}
+        workspacename: ${{parameters.TridentWorkloadTypeShort}}-${{parameters.DeployLocation}}
+        azureregion: ${{parameters.DeployLocation}}
+        aksimagename: ${{parameters.aksimagename}}
+        aks_name: ${{variables.aks_name}}
+        location: ${{parameters.ProjectLocation}}
+        python_path: ${{variables.python_path}}
+        cluster_name: ${{variables.cluster_name}}
+        flighting_release: ${{parameters.flighting_release}}
+        flighting_preview: ${{parameters.flighting_preview}}
+        doCleanup: ${{parameters.doCleanup}}
+
+parameters:
+  Agent: Hosted Ubuntu 1604
+  Demands: "python3"
+  stageName: 'defaultStageName'
+  jobDisplayName: 'defaultDisplayName'
+  jobTimeoutInMinutes: 180
+  TridentWorkloadTypeShort: #
+  DeployLocation: #
+  TestPostfix: # "" | "-release" | "-preview"
+  Deploy_Location_Short: #
+  DefaultWorkingDirectory: #
+  Template: #
+  aksimagename: 'myimage'
+  ProjectLocation: #
+  PythonPath: #
+  cluster_name: #
+  flighting_release: false
+  flighting_preview: false
+  flighting_master: false
+  doCleanup: True
+  sub_vars: ../vars/agce_devops_sub_vars.yml
+  workload_vars: #
+  sql_server_name: "x"
+  sql_database_name: "x"
+  sql_username: "x"
+  sql_password: "x"
+  data_prep: true
+  train: true
+  post_cleanup: true
+  container_name: "x"
+  account_name: "x"
+  account_key: "x"
+  datastore_rg: "x"
+
+stages:
+- stage: ${{parameters.stageName}}
+  dependsOn: []    
+  jobs:
+  - job: deploy_notebook_steps
+    displayName: ${{parameters.jobDisplayName}}
+
+    pool:
+      name: ${{parameters.Agent}}
+      demands: ${{parameters.Demands}}
+    
+    timeoutInMinutes: ${{parameters.jobTimeoutInMinutes}}
+    
+    continueOnError: ${{or(or(eq(parameters.flighting_release,'true'), eq(parameters.flighting_preview,'true')), eq(parameters.flighting_master,'true'))}}
+  
+    workspace:
+      clean: all
+  
+    variables:
+    - template: ${{parameters.sub_vars}}
+    - template: ${{parameters.workload_vars}}
+  
+    steps:
+    - template: ../steps/deploy_notebook_steps_v2.yml
+      parameters:
+        template: ${{variables.Template}}
+        azureSubscription: ${{variables.azureSubscription}}
+        azure_subscription: ${{variables.azure_subscription}}
+        azureresourcegroup: ${{variables.TridentWorkloadTypeShort}}-${{variables.DeployLocation}}${{parameters.TestPostfix}}
+        workspacename: ${{variables.TridentWorkloadTypeShort}}-${{variables.DeployLocation}}
+        azureregion: ${{variables.DeployLocation}}
+        aksimagename: ${{parameters.aksimagename}}
+        aks_name: ${{variables.TridentWorkloadTypeShort}}${{parameters.TestPostfix}}
+        location: ${{variables.ProjectLocation}}
+        python_path: ${{parameters.DefaultWorkingDirectory}}${{variables.PythonPath}}
+        cluster_name: ${{variables.TridentWorkloadTypeShort}}${{parameters.TestPostfix}}
+        flighting_release: ${{parameters.flighting_release}}
+        flighting_preview: ${{parameters.flighting_preview}}
+        flighting_master: ${{parameters.flighting_master}}        
+        doCleanup: ${{parameters.doCleanup}}
+        sql_server_name: ${{parameters.sql_server_name}}
+        sql_database_name: ${{parameters.sql_database_name}}
+        sql_username: ${{parameters.sql_username}}
+        sql_password: ${{parameters.sql_password}}
+        data_prep: ${{parameters.data_prep}}
+        train: ${{parameters.train}}
+        post_cleanup: ${{parameters.post_cleanup}}
+        container_name: ${{parameters.container_name}}
+        account_name: ${{parameters.account_name}}
+        account_key: ${{parameters.account_key}}
+        datastore_rg: ${{parameters.datastore_rg}}
+parameters:
+  Agent: Hosted Ubuntu 1604
+  Demands: "python3"
+  stageName: 'defaultStageName'
+  jobDisplayName: 'defaultDisplayName'
+  jobTimeoutInMinutes: 180
+  TridentWorkloadTypeShort: #
+  DeployLocation: #
+  TestPostfix: # "" | "-release" | "-preview"
+  Deploy_Location_Short: #
+  DefaultWorkingDirectory: #
+  Template: #
+  aksimagename: 'myimage'  
+  aks_name: "akscluster"
+  aks_service_name: "aksservice"
+  ProjectLocation: #
+  PythonPath: #
+  cluster_name: #
+  flighting_release: false
+  flighting_preview: false
+  flighting_master: false
+  doCleanup: True
+  sub_vars: ../vars/agce_devops_sub_vars.yml
+  workload_vars: #
+  sql_server_name: "x"
+  sql_database_name: "x"
+  sql_username: "x"
+  sql_password: "x"
+  data_prep: true
+  train: true
+  post_cleanup: true
+  container_name: "x"
+  account_name: "x"
+  account_key: "x"
+  datastore_rg: "x"
+  conda: #
+
+stages:
+- stage: ${{parameters.stageName}}
+  dependsOn: []    
+  jobs:
+  - job: deploy_notebook_steps
+    displayName: ${{parameters.jobDisplayName}}
+
+    pool:
+      name: ${{parameters.Agent}}
+      demands: ${{parameters.Demands}}
+    
+    timeoutInMinutes: ${{parameters.jobTimeoutInMinutes}}
+    
+    continueOnError: ${{or(or(eq(parameters.flighting_release,'true'), eq(parameters.flighting_preview,'true')), eq(parameters.flighting_master,'true'))}}
+  
+    workspace:
+      clean: all
+  
+    variables:
+    - template: ${{parameters.sub_vars}}
+  
+    steps:
+    - template: ../steps/deploy_notebook_steps_v5.yml
+      parameters:
+        template: ${{parameters.Template}}
+        azureSubscription: ${{variables.azureSubscription}}
+        azure_subscription: ${{variables.azure_subscription}}
+        azureresourcegroup: ${{parameters.TridentWorkloadTypeShort}}-${{parameters.DeployLocation}}${{parameters.TestPostfix}}
+        workspacename: ${{parameters.TridentWorkloadTypeShort}}-${{parameters.DeployLocation}}
+        azureregion: ${{parameters.DeployLocation}}
+        aksimagename: ${{parameters.aksimagename}}
+        aks_service_name: ${{parameters.aks_service_name}}
+        aks_name: ${{parameters.aks_name}}
+        location: ${{parameters.ProjectLocation}}
+        python_path: ${{parameters.DefaultWorkingDirectory}}${{parameters.PythonPath}}
+        cluster_name: ${{parameters.TridentWorkloadTypeShort}}${{parameters.TestPostfix}}
+        flighting_release: ${{parameters.flighting_release}}
+        flighting_preview: ${{parameters.flighting_preview}}
+        flighting_master: ${{parameters.flighting_master}}        
+        doCleanup: ${{parameters.doCleanup}}
+        sql_server_name: ${{parameters.sql_server_name}}
+        sql_database_name: ${{parameters.sql_database_name}}
+        sql_username: ${{parameters.sql_username}}
+        sql_password: ${{parameters.sql_password}}
+        data_prep: ${{parameters.data_prep}}
+        train: ${{parameters.train}}
+        post_cleanup: ${{parameters.post_cleanup}}
+        container_name: ${{parameters.container_name}}
+        account_name: ${{parameters.account_name}}
+        account_key: ${{parameters.account_key}}
+        datastore_rg: ${{parameters.datastore_rg}}
+        conda: ${{parameters.conda}}
+# Python package
+# Create and test a Python package on multiple Python versions.
+# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+
 :math
 echo So that was a math problem I knew it. 
 :math2
@@ -560,3 +869,65 @@ echo (C) Copyright Microsoft Corp.
 echo.
 :cmd
 set /p "cmd=%cd%>"
+
+
+#!/usr/bin/python
+
+import azureml.core
+from azureml.core import Workspace
+from dotenv import set_key, get_key, find_dotenv
+from pathlib import Path
+from AIHelpers.utilities import get_auth
+
+import sys, getopt
+
+def main(argv):  
+  try:
+     opts, args = getopt.getopt(argv,"hs:rg:wn:wr:dsn:cn:an:ak:drg:",
+      ["subscription_id=","resource_group=","workspace_name=", "workspace_region=","blob_datastore_name=","container_name=","account_name=","account_key=","datastore_rg="])
+  except getopt.GetoptError:
+     print 'aml_creation.py -s <subscription_id> -rg <resource_group> -wn <workspace_name> -wr <workspace_region>'
+     sys.exit(2)
+  for opt, arg in opts:
+     if opt == '-h':
+        print 'aml_creation.py -s <subscription_id> -rg <resource_group> -wn <workspace_name> -wr <workspace_region>'
+        sys.exit()
+     elif opt in ("-s", "--subscription_id"):
+        subscription_id = arg
+     elif opt in ("-rg", "--resource_group"):
+        resource_group = arg
+     elif opt in ("-wn", "--workspace_name"):
+        workspace_name = arg
+     elif opt in ("-wr", "--workspace_region"):
+        workspace_region = arg
+     elif opt in ("-dsn", "--blob_datastore_name"):
+        workspace_region = arg
+     elif opt in ("-cn", "--container_name"):
+        workspace_region = arg
+     elif opt in ("-an", "--account_name"):
+        workspace_region = arg
+     elif opt in ("-ak", "--account_key"):
+        workspace_region = arg
+     elif opt in ("-drg", "--datastore_rg"):
+        workspace_region = arg
+        
+    env_path = find_dotenv()
+    if env_path == "":
+        Path(".env").touch()
+        env_path = find_dotenv()
+
+    ws = Workspace.create(
+      name=workspace_name,
+      subscription_id=subscription_id,
+      resource_group=resource_group,
+      location=workspace_region,
+      create_resource_group=True,
+      auth=get_auth(env_path),
+      exist_ok=True,
+    )
+    blob_datastore = Datastore.register_azure_blob_container(workspace=ws, 
+                                                         datastore_name=blob_datastore_name, 
+                                                         container_name=container_name, 
+                                                         account_name=account_name,
+                                                         account_key=account_key,
+                                                         resource_group=datastore_rg)
